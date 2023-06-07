@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAFA Verify</title>
+    <script src="https://static.line-scdn.net/liff/edge/versions/2.15.0/sdk.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+
+<body>
+    
+    <p>สวัสดี!คุณ <span id="displayName"></span></p>
+    <iframe id="formframe" src="" frameborder="0"></iframe>
+     <script>
+        function runApp() {
+            liff.getProfile().then(profile => {
+                let LINEuserId = profile.userId;
+                let displayName = profile.displayName;
+                let pictureUrl = profile.pictureUrl;
+                let url = "https://www.appsheet.com/start/bf6575c9-8f4f-4175-86cb-44c57b00f176?LINEuserId=" + LINEuserId + "&displayName=" + displayName + "&pictureUrl=" + pictureUrl;
+                document.getElementById("formframe").src = url;
+
+                // Display the Line user ID on the page
+                document.getElementById("displayName").textContent = displayName;
+            }).catch(err => {
+                console.error(err);
+                document.getElementById("displayName").textContent = "Error retrieving Line user ID";
+            });
+        }
+
+        liff.init({ liffId: "1660908214-yZeZANAd" }, () => {
+            if (liff.isLoggedIn()) {
+                runApp();
+            } else {
+                liff.login();
+            }
+        }, err => console.error(err.code, err.message));
+    </script>
+
+</body>
+</html>
